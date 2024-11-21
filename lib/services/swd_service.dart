@@ -13,4 +13,64 @@ class StarWarsService {
       throw Exception('Failed to load characters');
     }
   }
+
+  Future<List<dynamic>> fetchCreatures() async {
+    final response = await http.get(Uri.parse('$baseUrl/creatures'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['data'];
+    } else {
+      throw Exception('Failed to load creatures');
+    }
+  }
+
+  Future<List<dynamic>> fetchDroids() async {
+    final response = await http.get(Uri.parse('$baseUrl/droids'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['data'];
+    } else {
+      throw Exception('Failed to load droids');
+    }
+  }
+
+  Future<List<dynamic>> fetchLocations() async {
+    final response = await http.get(Uri.parse('$baseUrl/locations'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['data'];
+    } else {
+      throw Exception('Failed to load locations');
+    }
+  }
+
+  Future<List<dynamic>> fetchOrganizations() async {
+    final response = await http.get(Uri.parse('$baseUrl/organizations'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['data'];
+    } else {
+      throw Exception('Failed to load organizations');
+    }
+  }
+
+  Future<List<dynamic>> fetchSpecies() async {
+    final response = await http.get(Uri.parse('$baseUrl/species'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['data'];
+    } else {
+      throw Exception('Failed to load species');
+    }
+  }
+
+  Future<List<dynamic>> fetchVehicles() async {
+    final response = await http.get(Uri.parse('$baseUrl/vehicles'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['data'];
+    } else {
+      throw Exception('Failed to load vehicles');
+    }
+  }
 }
