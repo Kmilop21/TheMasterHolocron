@@ -16,6 +16,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^1.2.2
   cached_network_image: ^3.2.3
+  flutter_native_splash: ^2.4.3
 
 dev_dependencies:
   flutter_test:
@@ -29,7 +30,9 @@ flutter:
 
 
   assets:
-
+    - assets/images/dogs.jpg
+    
+  
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
