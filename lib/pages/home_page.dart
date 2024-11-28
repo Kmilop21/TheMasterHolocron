@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_master_holocron/pages/categories/character_page.dart';
+import 'package:the_master_holocron/pages/categories/creature_page.dart';
 import 'package:the_master_holocron/pages/categories/droid_page.dart';
 import 'package:the_master_holocron/pages/categories/location_page.dart';
 import 'package:the_master_holocron/pages/categories/organization_page.dart';
@@ -12,6 +13,11 @@ class HomePage extends StatelessWidget {
       "name": "Characters",
       //"image": "assets/characters.jpg",
       "page": CharacterPage(),
+    },
+    {
+      "name": "Creatures",
+      //"image": "assets/characters.jpg",
+      "page": CreaturesPage(),
     },
     {
       "name": "Droids",

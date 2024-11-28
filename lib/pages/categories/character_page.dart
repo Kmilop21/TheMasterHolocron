@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
+import 'package:the_master_holocron/pages/categories/character_detail_page.dart';
 
 class CharacterPage extends StatelessWidget {
   final StarWarsService service = StarWarsService();
@@ -28,6 +29,16 @@ class CharacterPage extends StatelessWidget {
                   leading: Image.network(character['image']),
                   title: Text(character['name']),
                   subtitle: Text(character['description']),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CharacterDetailPage(
+                          characterId: character['id'].toString(),
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
             );
