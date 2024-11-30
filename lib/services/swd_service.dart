@@ -15,17 +15,26 @@ class StarWarsService {
   }
 
   Future<Map<String, dynamic>> fetchCharacterById(String id) async {
-    print("la id es: $id");
-    final response = await http.get(Uri.parse('$baseUrl/characters/$id'));
+    print("Fetching character with ID: $id");
+    final url = '$baseUrl/characters/$id';
+    print("Request URL: $url");
+
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body)['data'];
-      if (data != null) {
-        return data;
-      } else {
-        throw Exception('Character data is null');
+      try {
+        final decodedResponse =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        print("Decoded Response: $decodedResponse");
+        return decodedResponse; // Directly return the response as a map
+      } catch (e) {
+        print("Error decoding response: $e");
+        throw Exception('Failed to parse response');
       }
     } else {
+      print(
+          "Error: Failed to fetch character. Status code: ${response.statusCode}");
+      print("Response body: ${response.body}");
       throw Exception('Failed to load character');
     }
   }
