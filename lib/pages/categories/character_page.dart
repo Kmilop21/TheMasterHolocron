@@ -28,13 +28,12 @@ class CharacterPage extends StatelessWidget {
                 return ListTile(
                   leading: Image.network(character['image']),
                   title: Text(character['name']),
-                  subtitle: Text(character['description']),
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => CharacterDetailPage(
-                          characterId: character['id'].toString(),
+                          characterId: character['_id'].toString(),
                         ),
                       ),
                     );

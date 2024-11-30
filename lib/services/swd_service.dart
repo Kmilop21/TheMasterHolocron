@@ -15,10 +15,16 @@ class StarWarsService {
   }
 
   Future<Map<String, dynamic>> fetchCharacterById(String id) async {
+    print("la id es: $id");
     final response = await http.get(Uri.parse('$baseUrl/characters/$id'));
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body)['data'];
+      final data = jsonDecode(response.body)['data'];
+      if (data != null) {
+        return data;
+      } else {
+        throw Exception('Character data is null');
+      }
     } else {
       throw Exception('Failed to load character');
     }
