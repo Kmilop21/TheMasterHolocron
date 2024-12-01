@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_master_holocron/pages/categories/creature_detail_page.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
 
 class CreaturesPage extends StatelessWidget {
@@ -28,6 +29,16 @@ class CreaturesPage extends StatelessWidget {
                   leading: Image.network(creature['image']),
                   title: Text(creature['name']),
                   subtitle: Text(creature['description']),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CreatureDetailPage(
+                          creatureId: creature['_id'].toString(),
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
             );
