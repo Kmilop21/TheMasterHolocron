@@ -14,6 +14,76 @@ class StarWarsService {
     }
   }
 
+  Future<Map<String, dynamic>> searchCharacterByName(String name) async {
+  final formattedName = Uri.encodeComponent(name); // Codificar el nombre para la URL
+  final url = '$baseUrl/characters/name/$formattedName';
+  final response = await http.get(Uri.parse(url));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    if (data.isNotEmpty) {
+      return data[0]; // La API devuelve una lista, tomamos el primer elemento.
+    } else {
+      throw Exception('No character found with the name "$name".');
+    }
+  } else {
+    throw Exception('Failed to fetch character. HTTP status: ${response.statusCode}');
+  }
+}
+/*
+Future<Map<String, dynamic>> searchCharacterByName(String name) async {
+  final response = await http.get(Uri.parse('$baseUrl/characters?name=$name'));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body)['data'];
+    if (data.isNotEmpty) {
+      // Filtrar resultados por coincidencia exacta
+      final character = data.firstWhere(
+        (char) => char['name'].toString().toLowerCase() == name.toLowerCase(),
+        orElse: () => null,
+      );
+
+      if (character != null) {
+        return character;
+      } else {
+        throw Exception('No character found with the exact name "$name".');
+      }
+    } else {
+      throw Exception('No character found with the name "$name".');
+    }
+  } else {
+    throw Exception('Failed to search character. HTTP status: ${response.statusCode}');
+  }
+}
+*/
+  /*
+  Future<Map<String, dynamic>> searchCharacterByName(String name) async {
+  final response = await http.get(Uri.parse('$baseUrl/characters?name=$name'));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body)['data'];
+    if (data.isNotEmpty) {
+      return data[0]; // Retorna el primer resultado.
+    } else {
+      throw Exception('No character found');
+    }
+  } else {
+    throw Exception('Failed to search character');
+  }
+}
+*/
+  /*
+  Future<List<dynamic>> searchCharactersByName(String name) async {
+  final response = await http.get(Uri.parse('$baseUrl/characters?name=$name'));
+
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body)['data'];
+  } else {
+    throw Exception('Failed to search characters');
+  }
+}
+*/
+
   Future<Map<String, dynamic>> fetchCharacterById(String id) async {
     print("Fetching character with ID: $id");
     final url = '$baseUrl/characters/$id';
