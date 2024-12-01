@@ -1,7 +1,112 @@
 import 'package:flutter/material.dart';
-//import 'package:the_master_holocron/pages/categories/character_detail_page.dart';
+import 'package:the_master_holocron/pages/categories/character_detail_page.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
 
+class SearchPage extends StatefulWidget {
+  final StarWarsService service;
+
+  const SearchPage({required this.service, Key? key}) : super(key: key);
+
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  final TextEditingController _searchController = TextEditingController();
+  Future<Map<String, dynamic>>? _searchFuture;
+
+  void _performSearch(String query) {
+    setState(() {
+      _searchFuture = widget.service.searchCharacterByName(query);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: TextField(
+          controller: _searchController,
+          autofocus: true,
+          style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+          decoration: const InputDecoration(
+            hintText: "Buscar personaje...",
+            hintStyle: TextStyle(color: Color.fromARGB(179, 0, 0, 0)),
+            border: InputBorder.none,
+          ),
+          onSubmitted: _performSearch,
+        ),
+      ),
+      body: _searchFuture == null
+          ? const Center(
+              child: Text(
+                "Escribe un nombre para buscar un personaje.",
+                style: TextStyle(fontSize: 16),
+              ),
+            )
+          : FutureBuilder<Map<String, dynamic>>(
+              future: _searchFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      "Error: ${snapshot.error}",
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  );
+                } else if (!snapshot.hasData) {
+                  return const Center(
+                    child: Text("No se encontró el personaje."),
+                  );
+                } else {
+                  final character = snapshot.data!;
+                  return Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CharacterDetailPage(
+                              characterId: character['_id'],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              character['image'],
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(Icons.broken_image, size: 100);
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            character['name'],
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+    );
+  }
+}
+
+/*
 class SearchPage extends StatefulWidget {
   final StarWarsService service;
 
@@ -93,7 +198,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 }
-
+*/
 /*
 class SearchPage extends StatefulWidget {
   final StarWarsService service;
