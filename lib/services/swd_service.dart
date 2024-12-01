@@ -85,7 +85,9 @@ Future<Map<String, dynamic>> searchCharacterByName(String name) async {
 */
 
   Future<Map<String, dynamic>> fetchCharacterById(String id) async {
+    print("Fetching character with ID: $id");
     final url = '$baseUrl/characters/$id';
+    print("Request URL: $url");
 
     final response = await http.get(Uri.parse(url));
 
@@ -93,11 +95,16 @@ Future<Map<String, dynamic>> searchCharacterByName(String name) async {
       try {
         final decodedResponse =
             jsonDecode(response.body) as Map<String, dynamic>;
+        print("Decoded Response: $decodedResponse");
         return decodedResponse; // Directly return the response as a map
       } catch (e) {
+        print("Error decoding response: $e");
         throw Exception('Failed to parse response');
       }
     } else {
+      print(
+          "Error: Failed to fetch character. Status code: ${response.statusCode}");
+      print("Response body: ${response.body}");
       throw Exception('Failed to load character');
     }
   }
@@ -112,24 +119,6 @@ Future<Map<String, dynamic>> searchCharacterByName(String name) async {
     }
   }
 
-  Future<Map<String, dynamic>> fetchCreatureById(String id) async {
-    final url = '$baseUrl/creatures/$id';
-
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      try {
-        final decodedResponse =
-            jsonDecode(response.body) as Map<String, dynamic>;
-        return decodedResponse; // Directly return the response as a map
-      } catch (e) {
-        throw Exception('Failed to parse response');
-      }
-    } else {
-      throw Exception('Failed to load creature');
-    }
-  }
-
   Future<List<dynamic>> fetchDroids() async {
     final response = await http.get(Uri.parse('$baseUrl/droids'));
 
@@ -137,24 +126,6 @@ Future<Map<String, dynamic>> searchCharacterByName(String name) async {
       return jsonDecode(response.body)['data'];
     } else {
       throw Exception('Failed to load droids');
-    }
-  }
-
-  Future<Map<String, dynamic>> fetchDroidById(String id) async {
-    final url = '$baseUrl/droids/$id';
-
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      try {
-        final decodedResponse =
-            jsonDecode(response.body) as Map<String, dynamic>;
-        return decodedResponse; // Directly return the response as a map
-      } catch (e) {
-        throw Exception('Failed to parse response');
-      }
-    } else {
-      throw Exception('Failed to load droid');
     }
   }
 
@@ -168,47 +139,11 @@ Future<Map<String, dynamic>> searchCharacterByName(String name) async {
     }
   }
 
-  Future<Map<String, dynamic>> fetchLocationsById(String id) async {
-    final url = '$baseUrl/locations/$id';
-
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      try {
-        final decodedResponse =
-            jsonDecode(response.body) as Map<String, dynamic>;
-        return decodedResponse; // Directly return the response as a map
-      } catch (e) {
-        throw Exception('Failed to parse response');
-      }
-    } else {
-      throw Exception('Failed to load location');
-    }
-  }
-
   Future<List<dynamic>> fetchOrganizations() async {
     final response = await http.get(Uri.parse('$baseUrl/organizations'));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body)['data'];
-    } else {
-      throw Exception('Failed to load organizations');
-    }
-  }
-
-  Future<Map<String, dynamic>> fetchOrganizationById(String id) async {
-    final url = '$baseUrl/organizations/$id';
-
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      try {
-        final decodedResponse =
-            jsonDecode(response.body) as Map<String, dynamic>;
-        return decodedResponse; // Directly return the response as a map
-      } catch (e) {
-        throw Exception('Failed to parse response');
-      }
     } else {
       throw Exception('Failed to load organizations');
     }
@@ -224,24 +159,6 @@ Future<Map<String, dynamic>> searchCharacterByName(String name) async {
     }
   }
 
-  Future<Map<String, dynamic>> fetchSpeciesById(String id) async {
-    final url = '$baseUrl/species/$id';
-
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      try {
-        final decodedResponse =
-            jsonDecode(response.body) as Map<String, dynamic>;
-        return decodedResponse; // Directly return the response as a map
-      } catch (e) {
-        throw Exception('Failed to parse response');
-      }
-    } else {
-      throw Exception('Failed to load species');
-    }
-  }
-
   Future<List<dynamic>> fetchVehicles() async {
     final response = await http.get(Uri.parse('$baseUrl/vehicles'));
 
@@ -249,24 +166,6 @@ Future<Map<String, dynamic>> searchCharacterByName(String name) async {
       return jsonDecode(response.body)['data'];
     } else {
       throw Exception('Failed to load vehicles');
-    }
-  }
-
-  Future<Map<String, dynamic>> fetchVehicleById(String id) async {
-    final url = '$baseUrl/vehicles/$id';
-
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      try {
-        final decodedResponse =
-            jsonDecode(response.body) as Map<String, dynamic>;
-        return decodedResponse; // Directly return the response as a map
-      } catch (e) {
-        throw Exception('Failed to parse response');
-      }
-    } else {
-      throw Exception('Failed to load vehicle');
     }
   }
 }
