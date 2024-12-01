@@ -5,7 +5,7 @@ import 'package:the_master_holocron/services/swd_service.dart';
 class SearchPage extends StatefulWidget {
   final StarWarsService service;
 
-  const SearchPage({required this.service, Key? key}) : super(key: key);
+  const SearchPage({required this.service, super.key});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -83,7 +83,8 @@ class _SearchPageState extends State<SearchPage> {
                               character['image'],
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
-                                return const Icon(Icons.broken_image, size: 100);
+                                return const Icon(Icons.broken_image,
+                                    size: 100);
                               },
                             ),
                           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_master_holocron/pages/categories/droid_detail_page.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
 
 class DroidsPage extends StatelessWidget {
@@ -31,48 +32,59 @@ class DroidsPage extends StatelessWidget {
                 itemCount: droids.length,
                 itemBuilder: (context, index) {
                   final droid = droids[index];
-                  return Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(8),
-                            ),
-                            child: Image.network(
-                              droid['image'],
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return const Center(
-                                  child: Icon(Icons.broken_image, size: 48),
-                                );
-                              },
-                            ),
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DroidDetailPage(
+                            droidId: droid['_id'].toString(),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Text(
-                                droid['name'],
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
+                      );
+                    },
+                    child: Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(8),
                               ),
-                              const SizedBox(height: 4),
-
-                            ],
+                              child: Image.network(
+                                droid['image'],
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Center(
+                                    child: Icon(Icons.broken_image, size: 48),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  droid['name'],
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 4),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },

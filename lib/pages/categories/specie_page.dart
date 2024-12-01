@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_master_holocron/pages/categories/specie_detail_page.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
 
 class SpeciesPage extends StatelessWidget {
@@ -19,7 +20,6 @@ class SpeciesPage extends StatelessWidget {
             return Center(child: Text("Error: ${snapshot.error}"));
           } else {
             final species = snapshot.data as List;
-
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
@@ -31,46 +31,57 @@ class SpeciesPage extends StatelessWidget {
                 itemCount: species.length,
                 itemBuilder: (context, index) {
                   final specie = species[index];
-                  return Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(8),
-                            ),
-                            child: Image.network(
-                              specie['image'],
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return const Center(
-                                  child: Icon(Icons.broken_image, size: 48),
-                                );
-                              },
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SpecieDetailPage(
+                              specieId: specie['_id'].toString(),
                             ),
                           ),
+                        );
+                      },
+                      child: Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Text(
-                              specie['name'],
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(8),
+                                ),
+                                child: Image.network(
+                                  specie['image'],
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Center(
+                                      child: Icon(Icons.broken_image, size: 48),
+                                    );
+                                  },
+                                ),
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(
+                                  specie['name'],
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
+                      ));
                 },
               ),
             );
