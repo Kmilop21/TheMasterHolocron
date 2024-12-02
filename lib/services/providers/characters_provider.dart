@@ -26,4 +26,33 @@ class CharacterProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<Map<String, dynamic>> fetchCharacterById(String characterId) async {
+    // Check if the character is already cached
+    final cachedCharacter = _characters?.firstWhere(
+      (character) => character['_id'] == characterId,
+      orElse: () => null, // Return null if not found
+    );
+
+    if (cachedCharacter != null) {
+      return cachedCharacter;
+    }
+
+    // If not found, fetch from service
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final character = await _service.fetchCharacterById(characterId);
+      // Cache the character
+      _characters?.add(character); // Add to the list or cache as necessary
+      return character;
+    } catch (e) {
+      _error = e.toString();
+      throw e; // Rethrow the error after caching
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }
