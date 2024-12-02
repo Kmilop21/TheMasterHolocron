@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Star Wars Databank"),
+        title: const Text("The Master Holocron"),
 
         actions: [
           IconButton(
@@ -98,6 +98,7 @@ class HomePage extends StatelessWidget {
               },
               child: Card(
                 elevation: 4,
+                color: const Color.fromARGB(255, 239, 239, 239),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),

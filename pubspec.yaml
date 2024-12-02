@@ -44,6 +44,8 @@ flutter:
     - assets/images/Species.jpg
     - assets/images/Vehicles.jpg
     - assets/icons/holocron.png
+    - assets/icons/JediHolocron.png
+    - assets/images/JediHolocronSplash.png
 
 
   

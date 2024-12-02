@@ -35,34 +35,37 @@ class AboutPageState extends State<AboutPage> {
             ),
           ),
           // Contenido sobre la imagen
-          Center(
+          const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Text(
-                  'Yo',
+                Text(
+                  'Creadores',
                   style: TextStyle(
                     fontSize: 24,
-                    color: Color.fromARGB(255, 10, 9, 9),
+                    color: Color.fromARGB(255, 255, 255, 255),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Texto',
+                SizedBox(height: 20),
+                Text(
+                  '-Camilo Provoste',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Color.fromARGB(255, 14, 14, 14),
-                    fontWeight: FontWeight.normal,
+                    color: Color.fromARGB(255, 240, 240, 240),
+                    fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Acción del botón
-                  },
-                  child: const Text('Volver'),
+                SizedBox(height: 20),
+                Text(
+                  '-Diego Morales',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Color.fromARGB(255, 248, 248, 248),
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
