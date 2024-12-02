@@ -1,76 +1,111 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:the_master_holocron/models/sw_entity.dart';
 import 'package:the_master_holocron/services/providers/organizations_provider.dart';
+import 'package:the_master_holocron/services/favorites_db.dart';
 
-class OrganizationDetailPage extends StatelessWidget {
+class OrganizationDetailPage extends StatefulWidget {
   final String organizationId;
 
   const OrganizationDetailPage({super.key, required this.organizationId});
 
   @override
-  Widget build(BuildContext context) {
-    // Use the OrganizationProvider from the context
+  State<OrganizationDetailPage> createState() => _OrganizationDetailPageState();
+}
+
+class _OrganizationDetailPageState extends State<OrganizationDetailPage> {
+  SWEntity? _organization;
+  bool _isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOrganization();
+    _checkFavoriteStatus();
+  }
+
+  Future<void> _loadOrganization() async {
     final provider = Provider.of<OrganizationProvider>(context, listen: false);
 
-    // Check if the organization data is already in the provider
-    final organization = provider.organizations?.firstWhere(
-      (organization) => organization['_id'] == organizationId,
-      orElse: () => null, // Return null if not found
+    // Check if organization data is already in the provider
+    final localOrganization = provider.organizations?.firstWhere(
+      (org) => org['_id'] == widget.organizationId,
+      orElse: () => null,
     );
 
+    if (localOrganization != null) {
+      setState(() {
+        _organization = SWEntity.fromJson(localOrganization, "organization");
+      });
+    } else {
+      // Fetch from API if not found in the provider
+      final fetchedOrganization =
+          await provider.fetchOrganizationById(widget.organizationId);
+      setState(() {
+        _organization = SWEntity.fromJson(fetchedOrganization, "organization");
+      });
+    }
+  }
+
+  Future<void> _checkFavoriteStatus() async {
+    if (_organization == null) return;
+    final db = FavoritesDatabase();
+    final isFavorite = await db.isFavorite(_organization!.id, "organization");
+    setState(() {
+      _isFavorite = isFavorite;
+    });
+  }
+
+  Future<void> _toggleFavorite() async {
+    if (_organization == null) return;
+    final db = FavoritesDatabase();
+
+    if (_isFavorite) {
+      await db.removeFavorite(_organization!.id, "organization");
+    } else {
+      await db.addFavorite(_organization!);
+    }
+
+    setState(() {
+      _isFavorite = !_isFavorite;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Organization Details'),
+        actions: [
+          if (_organization != null)
+            IconButton(
+              icon: Icon(
+                _isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: _isFavorite ? Colors.red : null,
+              ),
+              onPressed: _toggleFavorite,
+            ),
+        ],
       ),
-      body: organization != null
+      body: _organization != null
           ? Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.network(organization['image']),
+                  Image.network(_organization!.image),
                   const SizedBox(height: 16),
                   Text(
-                    organization['name'],
+                    _organization!.name,
                     style: const TextStyle(
                         fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  Text(organization['description']),
+                  Text(_organization!.description),
                 ],
               ),
             )
-          : FutureBuilder<Map<String, dynamic>>(
-              future: provider.fetchOrganizationById(organizationId),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text("Error: ${snapshot.error}"));
-                } else if (snapshot.hasData) {
-                  final organization = snapshot.data!;
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.network(organization['image']),
-                        const SizedBox(height: 16),
-                        Text(
-                          organization['name'],
-                          style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(organization['description']),
-                      ],
-                    ),
-                  );
-                } else {
-                  return const Center(child: Text("Organization not found"));
-                }
-              },
-            ),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }

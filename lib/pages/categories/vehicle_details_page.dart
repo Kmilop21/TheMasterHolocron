@@ -1,76 +1,110 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:the_master_holocron/models/sw_entity.dart';
 import 'package:the_master_holocron/services/providers/vehicles_provider.dart';
+import 'package:the_master_holocron/services/favorites_db.dart';
 
-class VehicleDetailPage extends StatelessWidget {
+class VehicleDetailPage extends StatefulWidget {
   final String vehicleId;
 
   const VehicleDetailPage({super.key, required this.vehicleId});
 
   @override
-  Widget build(BuildContext context) {
-    // Use the VehicleProvider from the context
+  State<VehicleDetailPage> createState() => _VehicleDetailPageState();
+}
+
+class _VehicleDetailPageState extends State<VehicleDetailPage> {
+  SWEntity? _vehicle;
+  bool _isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVehicle();
+    _checkFavoriteStatus();
+  }
+
+  Future<void> _loadVehicle() async {
     final provider = Provider.of<VehicleProvider>(context, listen: false);
 
-    // Check if the vehicle data is already in the provider
-    final vehicle = provider.vehicles?.firstWhere(
-      (vehicle) => vehicle['_id'] == vehicleId,
-      orElse: () => null, // Return null if not found
+    // Check if vehicle data is already in the provider
+    final localVehicle = provider.vehicles?.firstWhere(
+      (vehicle) => vehicle['_id'] == widget.vehicleId,
+      orElse: () => null,
     );
 
+    if (localVehicle != null) {
+      setState(() {
+        _vehicle = SWEntity.fromJson(localVehicle, "vehicle");
+      });
+    } else {
+      // Fetch from API if not found in the provider
+      final fetchedVehicle = await provider.fetchVehicleById(widget.vehicleId);
+      setState(() {
+        _vehicle = SWEntity.fromJson(fetchedVehicle, "vehicle");
+      });
+    }
+  }
+
+  Future<void> _checkFavoriteStatus() async {
+    if (_vehicle == null) return;
+    final db = FavoritesDatabase();
+    final isFavorite = await db.isFavorite(_vehicle!.id, "vehicle");
+    setState(() {
+      _isFavorite = isFavorite;
+    });
+  }
+
+  Future<void> _toggleFavorite() async {
+    if (_vehicle == null) return;
+    final db = FavoritesDatabase();
+
+    if (_isFavorite) {
+      await db.removeFavorite(_vehicle!.id, "vehicle");
+    } else {
+      await db.addFavorite(_vehicle!);
+    }
+
+    setState(() {
+      _isFavorite = !_isFavorite;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Vehicle Details'),
+        actions: [
+          if (_vehicle != null)
+            IconButton(
+              icon: Icon(
+                _isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: _isFavorite ? Colors.red : null,
+              ),
+              onPressed: _toggleFavorite,
+            ),
+        ],
       ),
-      body: vehicle != null
+      body: _vehicle != null
           ? Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.network(vehicle['image']),
+                  Image.network(_vehicle!.image),
                   const SizedBox(height: 16),
                   Text(
-                    vehicle['name'],
+                    _vehicle!.name,
                     style: const TextStyle(
                         fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  Text(vehicle['description']),
+                  Text(_vehicle!.description),
                 ],
               ),
             )
-          : FutureBuilder<Map<String, dynamic>>(
-              future: provider.fetchVehicleById(vehicleId),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text("Error: ${snapshot.error}"));
-                } else if (snapshot.hasData) {
-                  final vehicle = snapshot.data!;
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.network(vehicle['image']),
-                        const SizedBox(height: 16),
-                        Text(
-                          vehicle['name'],
-                          style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(vehicle['description']),
-                      ],
-                    ),
-                  );
-                } else {
-                  return const Center(child: Text("Vehicle not found"));
-                }
-              },
-            ),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }

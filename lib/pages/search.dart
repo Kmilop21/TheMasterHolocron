@@ -149,7 +149,7 @@ class _SearchPageState extends State<SearchPage> {
       case 'locations':
         return LocationDetailPage(locationId: result['_id']);
       case 'species':
-        return SpecieDetailPage(specieId: result['_id']);
+        return SpeciesDetailPage(speciesId: result['_id']);
       case 'vehicles':
         return VehicleDetailPage(vehicleId: result['_id']);
       // Agrega las demás categorías si tienen páginas de detalle
@@ -161,110 +161,3 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 }
-
-/*
-class SearchPage extends StatefulWidget {
-  final StarWarsService service;
-
-  const SearchPage({required this.service, super.key});
-
-  @override
-  State<SearchPage> createState() => _SearchPageState();
-}
-
-class _SearchPageState extends State<SearchPage> {
-  final TextEditingController _searchController = TextEditingController();
-  Future<Map<String, dynamic>>? _searchFuture;
-
-  void _performSearch(String query) {
-    setState(() {
-      _searchFuture = widget.service.searchCharacterByName(query);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: _searchController,
-          autofocus: true,
-          style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-          decoration: const InputDecoration(
-            hintText: "Buscar personaje...",
-            hintStyle: TextStyle(color: Color.fromARGB(179, 0, 0, 0)),
-            border: InputBorder.none,
-          ),
-          onSubmitted: _performSearch,
-        ),
-      ),
-      body: _searchFuture == null
-          ? const Center(
-              child: Text(
-                "Escribe un nombre para buscar un personaje.",
-                style: TextStyle(fontSize: 16),
-              ),
-            )
-          : FutureBuilder<Map<String, dynamic>>(
-              future: _searchFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      "Error: ${snapshot.error}",
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  );
-                } else if (!snapshot.hasData) {
-                  return const Center(
-                    child: Text("No se encontró el personaje."),
-                  );
-                } else {
-                  final character = snapshot.data!;
-                  return Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CharacterDetailPage(
-                              characterId: character['_id'],
-                            ),
-                          ),
-                        );
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              character['image'],
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return const Icon(Icons.broken_image,
-                                    size: 100);
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            character['name'],
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              },
-            ),
-    );
-  }
-}
-*/

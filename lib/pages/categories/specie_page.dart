@@ -57,8 +57,8 @@ class SpeciesPageState extends State<SpeciesPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SpecieDetailPage(
-                            specieId: specie['_id'].toString(),
+                          builder: (context) => SpeciesDetailPage(
+                            speciesId: specie['_id'].toString(),
                           ),
                         ),
                       );
