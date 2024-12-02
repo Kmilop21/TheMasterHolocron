@@ -6,6 +6,9 @@ import 'package:the_master_holocron/pages/categories/location_page.dart';
 import 'package:the_master_holocron/pages/categories/organization_page.dart';
 import 'package:the_master_holocron/pages/categories/specie_page.dart';
 import 'package:the_master_holocron/pages/categories/vehicle_page.dart';
+import 'package:the_master_holocron/pages/about.dart';
+
+
 
 class HomePage extends StatelessWidget {
   final List<Map<String, dynamic>> categories = [
@@ -44,6 +47,7 @@ class HomePage extends StatelessWidget {
       //"image": "assets/vehicles.jpg",
       "page": VehiclesPage(),
     },
+
   ];
 
   HomePage({super.key});
@@ -53,7 +57,23 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Databank"),
+
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AboutPage(),
+                ),
+              );
+            },
+          ),
+        ],
+
       ),
+           
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
@@ -63,7 +83,11 @@ class HomePage extends StatelessWidget {
             mainAxisSpacing: 8.0,
           ),
           itemCount: categories.length,
-          itemBuilder: (context, index) {
+          itemBuilder: (context, index) 
+          
+          
+          
+          {
             final category = categories[index];
             return GestureDetector(
               onTap: () {
