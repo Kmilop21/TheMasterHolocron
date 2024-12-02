@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_master_holocron/pages/categories/droid_detail_page.dart';
-import 'package:the_master_holocron/services/providers/droid_provider.dart';
+import 'package:the_master_holocron/services/providers/droids_provider.dart';
 
 class DroidsPage extends StatefulWidget {
   const DroidsPage({super.key});

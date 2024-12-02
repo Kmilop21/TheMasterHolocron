@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_master_holocron/pages/categories/creature_detail_page.dart';
-import 'package:the_master_holocron/services/providers/creature_provider.dart';
+import 'package:the_master_holocron/services/providers/creatures_provider.dart';
 
 class CreaturesPage extends StatefulWidget {
   const CreaturesPage({super.key});

@@ -13,44 +13,38 @@ class HomePage extends StatelessWidget {
   final List<Map<String, dynamic>> categories = [
     {
       "name": "Characters",
-      //"image": "assets/characters.jpg",
-      "page": const CharactersPage(),
       "image": "assets/images/Characters.jpg",
-      "page": CharacterPage(),
+      "page": const CharactersPage(),
     },
     {
       "name": "Creatures",
-      //"image": "assets/characters.jpg",
-      "page": const CreaturesPage(),
       "image": "assets/images/Creatures.jpg",
-      "page": CreaturesPage(),
+      "page": const CreaturesPage(),
     },
     {
       "name": "Droids",
-      //"image": "assets/droids.jpg",
-      "page": const DroidsPage(),
       "image": "assets/images/Droids.jpg",
-      "page": DroidsPage(),
+      "page": const DroidsPage(),
     },
     {
       "name": "Organizations",
       "image": "assets/images/Organizations.jpg",
-      "page": OrganizationsPage(),
+      "page": const OrganizationsPage(),
     },
     {
       "name": "Locations",
       "image": "assets/images/Localizations.jpg",
-      "page": LocationsPage(),
+      "page": const LocationsPage(),
     },
     {
       "name": "Species",
       "image": "assets/images/Species.jpg",
-      "page": SpeciesPage(),
+      "page": const SpeciesPage(),
     },
     {
       "name": "Vehicles",
       "image": "assets/images/Vehicles.jpg",
-      "page": VehiclesPage(),
+      "page": const VehiclesPage(),
     },
   ];
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:the_master_holocron/pages/home_page.dart';
 import 'package:provider/provider.dart';
-import 'package:the_master_holocron/services/providers/character_provider.dart';
-import 'package:the_master_holocron/services/providers/creature_provider.dart';
-import 'package:the_master_holocron/services/providers/droid_provider.dart';
+import 'package:the_master_holocron/services/providers/characters_provider.dart';
+import 'package:the_master_holocron/services/providers/creatures_provider.dart';
+import 'package:the_master_holocron/services/providers/droids_provider.dart';
 import 'package:the_master_holocron/services/providers/locations_provider.dart';
 import 'package:the_master_holocron/services/providers/organizations_provider.dart';
 import 'package:the_master_holocron/services/providers/species_provider.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_master_holocron/pages/categories/character_detail_page.dart';
-import 'package:the_master_holocron/services/providers/character_provider.dart';
+import 'package:the_master_holocron/services/providers/characters_provider.dart';
 
 class CharactersPage extends StatefulWidget {
   const CharactersPage({super.key});
