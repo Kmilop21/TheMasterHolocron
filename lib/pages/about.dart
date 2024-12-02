@@ -30,7 +30,7 @@ class AboutPageState extends State<AboutPage> {
           // Imagen que cubre toda la pantalla
           Positioned.fill(
             child: Image.asset(
-              'assets/images/monkey.jpg', // Imagen de fondo
+              'assets/images/dogs.jpg', // Imagen de fondo
               fit: BoxFit.cover,
             ),
           ),

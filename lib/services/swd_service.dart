@@ -45,6 +45,131 @@ class StarWarsService {
     }
   }
 
+
+  Future<Map<String, dynamic>> searchCreatureByName(String name) async {
+    final formattedName =
+        Uri.encodeComponent(name); // Codificar el nombre para la URL
+    final url = '$baseUrl/creatures/name/$formattedName';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data.isNotEmpty) {
+        return data[
+            0]; // La API devuelve una lista, tomamos el primer elemento.
+      } else {
+        throw Exception('No creature found with the name "$name".');
+      }
+    } else {
+      throw Exception(
+          'Failed to fetch creature. HTTP status: ${response.statusCode}');
+    }
+  }
+
+  
+    Future<Map<String, dynamic>> searchDroidByName(String name) async {
+    final formattedName =
+        Uri.encodeComponent(name); // Codificar el nombre para la URL
+    final url = '$baseUrl/droids/name/$formattedName';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data.isNotEmpty) {
+        return data[
+            0]; // La API devuelve una lista, tomamos el primer elemento.
+      } else {
+        throw Exception('No droid found with the name "$name".');
+      }
+    } else {
+      throw Exception(
+          'Failed to fetch droid. HTTP status: ${response.statusCode}');
+    }
+  }
+
+    Future<Map<String, dynamic>> searchLocationsByName(String name) async {
+    final formattedName =
+        Uri.encodeComponent(name); // Codificar el nombre para la URL
+    final url = '$baseUrl/locations/name/$formattedName';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data.isNotEmpty) {
+        return data[
+            0]; // La API devuelve una lista, tomamos el primer elemento.
+      } else {
+        throw Exception('No location found with the name "$name".');
+      }
+    } else {
+      throw Exception(
+          'Failed to fetch location. HTTP status: ${response.statusCode}');
+    }
+  }
+
+
+  Future<Map<String, dynamic>> searchOrganizationsByName(String name) async {
+    final formattedName =
+        Uri.encodeComponent(name); // Codificar el nombre para la URL
+    final url = '$baseUrl/organizations/name/$formattedName';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data.isNotEmpty) {
+        return data[
+            0]; // La API devuelve una lista, tomamos el primer elemento.
+      } else {
+        throw Exception('No organization found with the name "$name".');
+      }
+    } else {
+      throw Exception(
+          'Failed to fetch organization. HTTP status: ${response.statusCode}');
+    }
+  }
+
+  Future<Map<String, dynamic>> searchSpeciesByName(String name) async {
+    final formattedName =
+        Uri.encodeComponent(name); // Codificar el nombre para la URL
+    final url = '$baseUrl/species/name/$formattedName';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data.isNotEmpty) {
+        return data[
+            0]; // La API devuelve una lista, tomamos el primer elemento.
+      } else {
+        throw Exception('No specie found with the name "$name".');
+      }
+    } else {
+      throw Exception(
+          'Failed to fetch specie. HTTP status: ${response.statusCode}');
+    }
+  }
+
+
+  Future<Map<String, dynamic>> searchVehiclesByName(String name) async {
+    final formattedName =
+        Uri.encodeComponent(name); // Codificar el nombre para la URL
+    final url = '$baseUrl/vehicles/name/$formattedName';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data.isNotEmpty) {
+        return data[
+            0]; // La API devuelve una lista, tomamos el primer elemento.
+      } else {
+        throw Exception('No vehicle found with the name "$name".');
+      }
+    } else {
+      throw Exception(
+          'Failed to fetch vehicle. HTTP status: ${response.statusCode}');
+    }
+  }
+
+
   Future<Map<String, dynamic>> fetchCharacterById(String id) async {
     final url = '$baseUrl/characters/$id';
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_master_holocron/pages/categories/organization_detail_page.dart';
+import 'package:the_master_holocron/pages/search.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
 
 class OrganizationsPage extends StatelessWidget {
@@ -10,7 +11,31 @@ class OrganizationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Star Wars Organizations")),
+      appBar: AppBar(
+        title: const Text("Star Wars Organizations"),
+        
+      actions: [
+      
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchPage(
+                service: service,
+                category: 'organizations',
+              ),
+            ),
+          );
+        },
+      ),
+
+      ],
+        
+        
+        
+        ),
       body: FutureBuilder(
         future: service.fetchOrganizations(),
         builder: (context, snapshot) {

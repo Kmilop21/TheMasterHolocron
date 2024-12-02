@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_master_holocron/pages/categories/specie_detail_page.dart';
+import 'package:the_master_holocron/pages/search.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
 
 class SpeciesPage extends StatelessWidget {
@@ -10,7 +11,29 @@ class SpeciesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Star Wars Species")),
+      appBar: AppBar(
+        title: const Text("Star Wars Species"),
+        
+        actions: [
+      
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchPage(
+                service: service,
+                category: 'species',
+              ),
+            ),
+          );
+        },
+      ),
+
+      ],
+        
+        ),
       body: FutureBuilder(
         future: service.fetchSpecies(),
         builder: (context, snapshot) {

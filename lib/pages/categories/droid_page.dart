@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_master_holocron/pages/categories/droid_detail_page.dart';
+import 'package:the_master_holocron/pages/search.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
 
 class DroidsPage extends StatelessWidget {
@@ -10,7 +11,28 @@ class DroidsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Star Wars Droids")),
+      appBar: AppBar(title: const Text("Star Wars Droids"),
+      
+      actions: [
+      
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchPage(
+                service: service,
+                category: 'droids',
+              ),
+            ),
+          );
+        },
+      ),
+
+      ],
+      
+      ),
       body: FutureBuilder(
         future: service.fetchDroids(),
         builder: (context, snapshot) {
