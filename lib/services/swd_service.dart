@@ -1,8 +1,19 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:the_master_holocron/models/sw_entity.dart';
 
 class StarWarsService {
   final String baseUrl = "https://starwars-databank-server.vercel.app/api/v1/";
+
+  Future<List<SWEntity>> fetchEntities(String category) async {
+    final response = await http.get(Uri.parse('$baseUrl/$category'));
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body)['data'];
+      return jsonData.map((json) => SWEntity.fromJson(json, category)).toList();
+    } else {
+      throw Exception('Failed to load $category');
+    }
+  }
 
   Future<List<dynamic>> fetchCharacters() async {
     final response = await http.get(Uri.parse('$baseUrl/characters'));

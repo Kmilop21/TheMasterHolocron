@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:the_master_holocron/pages/home_page.dart';
+import 'package:provider/provider.dart';
+import 'package:the_master_holocron/services/swd_provider.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final provider = SWDataProvider();
+  await provider.initializeDatabase();
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => provider,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

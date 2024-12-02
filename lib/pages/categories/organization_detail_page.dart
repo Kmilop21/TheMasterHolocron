@@ -15,7 +15,7 @@ class OrganizationDetailPage extends StatelessWidget {
         title: const Text('Organization Details'),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
-        future: service.fetchVehicleById(organizationId),
+        future: service.fetchOrganizationById(organizationId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

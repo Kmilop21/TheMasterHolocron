@@ -1,32 +1,25 @@
-class Character {
+class SWEntity {
   final String id;
   final String name;
   final String description;
   final String image;
+  final String category; // e.g., "character", "creature", "droid", etc.
 
-  Character({
+  SWEntity({
     required this.id,
     required this.name,
     required this.description,
     required this.image,
+    required this.category,
   });
 
-  // To convert a Character to/from JSON
-  factory Character.fromJson(Map<String, dynamic> json) {
-    return Character(
+  factory SWEntity.fromJson(Map<String, dynamic> json, String category) {
+    return SWEntity(
       id: json['_id'],
       name: json['name'],
       description: json['description'],
       image: json['image'],
+      category: category,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      '_id': id,
-      'name': name,
-      'description': description,
-      'image': image,
-    };
   }
 }

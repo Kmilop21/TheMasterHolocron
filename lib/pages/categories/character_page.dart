@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:the_master_holocron/services/swd_provider.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
-import 'package:the_master_holocron/pages/categories/character_detail_page.dart';
-import 'package:the_master_holocron/pages/search.dart';
+import 'character_detail_page.dart';
 
 class CharacterPage extends StatefulWidget {
   final StarWarsService service = StarWarsService();
@@ -13,8 +14,6 @@ class CharacterPage extends StatefulWidget {
 }
 
 class _CharacterPageState extends State<CharacterPage> {
-  List<dynamic> _characters = [];
-
   @override
   void initState() {
     super.initState();
@@ -22,40 +21,31 @@ class _CharacterPageState extends State<CharacterPage> {
   }
 
   Future<void> _fetchCharacters() async {
-    try {
-      final characters = await widget.service.fetchCharacters();
-      setState(() {
-        _characters = characters;
-      });
-    } catch (error) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error fetching characters: $error")),
-        );
+    final provider = Provider.of<SWDataProvider>(context, listen: false);
+
+    if (provider.characters.isEmpty) {
+      try {
+        final characters = (await widget.service.fetchCharacters())
+            .cast<Map<String, dynamic>>(); // Fetch characters as a list of maps
+        provider.addEntities(characters, 'character');
+      } catch (error) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error fetching characters: $error")),
+          );
+        }
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<SWDataProvider>(context);
+    final characters = provider.characters;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Star Wars Characters"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SearchPage(service: widget.service),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-      body: _characters.isEmpty
+      appBar: AppBar(title: const Text("Star Wars Characters")),
+      body: characters.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(8.0),
@@ -65,16 +55,16 @@ class _CharacterPageState extends State<CharacterPage> {
                   crossAxisSpacing: 8.0,
                   mainAxisSpacing: 8.0,
                 ),
-                itemCount: _characters.length,
+                itemCount: characters.length,
                 itemBuilder: (context, index) {
-                  final character = _characters[index];
+                  final character = characters[index]; // SWEntity object
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => CharacterDetailPage(
-                            characterId: character['_id'].toString(),
+                            character: character, // Use character.id
                           ),
                         ),
                       );
@@ -93,7 +83,7 @@ class _CharacterPageState extends State<CharacterPage> {
                                 top: Radius.circular(8),
                               ),
                               child: Image.network(
-                                character['image'],
+                                character.image, // Use character.image
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   return const Center(
@@ -107,7 +97,7 @@ class _CharacterPageState extends State<CharacterPage> {
                             padding: const EdgeInsets.all(8.0),
                             child: Center(
                               child: Text(
-                                character['name'],
+                                character.name, // Use character.name
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,

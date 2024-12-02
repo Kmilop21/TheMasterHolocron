@@ -6,6 +6,7 @@ import 'package:the_master_holocron/pages/categories/location_page.dart';
 import 'package:the_master_holocron/pages/categories/organization_page.dart';
 import 'package:the_master_holocron/pages/categories/specie_page.dart';
 import 'package:the_master_holocron/pages/categories/vehicle_page.dart';
+import 'package:the_master_holocron/pages/favorites.dart';
 
 class HomePage extends StatelessWidget {
   final List<Map<String, dynamic>> categories = [
@@ -53,6 +54,18 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Databank"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () {
+              // Navigate to the FavoritesPage when the button is pressed
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FavoritesPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
