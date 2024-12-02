@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_master_holocron/pages/categories/creature_detail_page.dart';
 import 'package:the_master_holocron/services/providers/creatures_provider.dart';
+import 'package:the_master_holocron/pages/search.dart';
+import 'package:the_master_holocron/services/swd_service.dart';
 
 class CreaturesPage extends StatefulWidget {
-  const CreaturesPage({super.key});
+  
+  final StarWarsService service = StarWarsService();
+  CreaturesPage({super.key});
 
   @override
   CreaturesPageState createState() => CreaturesPageState();
@@ -29,6 +33,26 @@ class CreaturesPageState extends State<CreaturesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Creatures"),
+
+      actions: [
+      
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchPage(
+                service: widget.service,
+                category: 'creatures',
+              ),
+            ),
+          );
+        },
+      ),
+
+      ],
+
       ),
       body: Consumer<CreatureProvider>(
         builder: (context, provider, child) {

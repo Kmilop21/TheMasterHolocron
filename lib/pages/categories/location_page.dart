@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_master_holocron/pages/categories/location_detail_page.dart';
 import 'package:the_master_holocron/services/providers/locations_provider.dart';
+import 'package:the_master_holocron/pages/search.dart';
+import 'package:the_master_holocron/services/swd_service.dart';
 
 class LocationsPage extends StatefulWidget {
-  const LocationsPage({super.key});
+  
+  final StarWarsService service = StarWarsService();
+  LocationsPage({super.key});
 
   @override
   LocationsPageState createState() => LocationsPageState();
@@ -29,6 +33,27 @@ class LocationsPageState extends State<LocationsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Locations"),
+
+      actions: [
+      
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchPage(
+                service: widget.service,
+                category: 'locations',
+              ),
+            ),
+          );
+        },
+      ),
+
+      ],
+
+
       ),
       body: Consumer<LocationProvider>(
         builder: (context, provider, child) {

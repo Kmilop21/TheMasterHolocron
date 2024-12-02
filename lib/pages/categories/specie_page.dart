@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_master_holocron/pages/categories/specie_detail_page.dart';
 import 'package:the_master_holocron/services/providers/species_provider.dart';
+import 'package:the_master_holocron/pages/search.dart';
+import 'package:the_master_holocron/services/swd_service.dart';
 
 class SpeciesPage extends StatefulWidget {
-  const SpeciesPage({super.key});
+  
+  final StarWarsService service = StarWarsService();
+  SpeciesPage({super.key});
 
   @override
   SpeciesPageState createState() => SpeciesPageState();
@@ -29,6 +33,27 @@ class SpeciesPageState extends State<SpeciesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Species"),
+
+      actions: [
+      
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchPage(
+                service: widget.service,
+                category: 'species',
+              ),
+            ),
+          );
+        },
+      ),
+
+      ],
+
+
       ),
       body: Consumer<SpecieProvider>(
         builder: (context, provider, child) {

@@ -14,37 +14,37 @@ class HomePage extends StatelessWidget {
     {
       "name": "Characters",
       "image": "assets/images/Characters.jpg",
-      "page": const CharactersPage(),
+      "page": CharactersPage(),
     },
     {
       "name": "Creatures",
       "image": "assets/images/Creatures.jpg",
-      "page": const CreaturesPage(),
+      "page": CreaturesPage(),
     },
     {
       "name": "Droids",
       "image": "assets/images/Droids.jpg",
-      "page": const DroidsPage(),
+      "page": DroidsPage(),
     },
     {
       "name": "Organizations",
       "image": "assets/images/Organizations.jpg",
-      "page": const OrganizationsPage(),
+      "page": OrganizationsPage(),
     },
     {
       "name": "Locations",
       "image": "assets/images/Localizations.jpg",
-      "page": const LocationsPage(),
+      "page": LocationsPage(),
     },
     {
       "name": "Species",
       "image": "assets/images/Species.jpg",
-      "page": const SpeciesPage(),
+      "page": SpeciesPage(),
     },
     {
       "name": "Vehicles",
       "image": "assets/images/Vehicles.jpg",
-      "page": const VehiclesPage(),
+      "page": VehiclesPage(),
     },
   ];
 
