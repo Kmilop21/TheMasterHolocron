@@ -14,37 +14,37 @@ class HomePage extends StatelessWidget {
   final List<Map<String, dynamic>> categories = [
     {
       "name": "Characters",
-      //"image": "assets/characters.jpg",
+      "image": "assets/images/Characters.jpg",
       "page": CharacterPage(),
     },
     {
       "name": "Creatures",
-      //"image": "assets/characters.jpg",
+      "image": "assets/images/Creatures.jpg",
       "page": CreaturesPage(),
     },
     {
       "name": "Droids",
-      //"image": "assets/droids.jpg",
+      "image": "assets/images/Droids.jpg",
       "page": DroidsPage(),
     },
     {
       "name": "Organizations",
-      //"image": "assets/organizations.jpg",
+      "image": "assets/images/Organizations.jpg",
       "page": OrganizationsPage(),
     },
     {
       "name": "Locations",
-      //"image": "assets/locations.jpg",
+      "image": "assets/images/Localizations.jpg",
       "page": LocationsPage(),
     },
     {
       "name": "Species",
-      //"image": "assets/species.jpg",
+      "image": "assets/images/Species.jpg",
       "page": SpeciesPage(),
     },
     {
       "name": "Vehicles",
-      //"image": "assets/vehicles.jpg",
+      "image": "assets/images/Vehicles.jpg",
       "page": VehiclesPage(),
     },
 
@@ -104,14 +104,14 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: ClipRRect(
                         borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(8)),
-                        // child: Image.asset(
-                        //   category['image'],
-                        //   fit: BoxFit.cover,
-                        // ),
+                            const BorderRadius.vertical(top: Radius.circular(8)),
+                         child: Image.asset(
+                           category['image'],
+                           fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     Padding(

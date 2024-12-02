@@ -36,6 +36,13 @@ flutter:
 
   assets:
     - assets/images/dogs.jpg
+    - assets/images/Characters.jpg
+    - assets/images/Creatures.jpg
+    - assets/images/Droids.jpg
+    - assets/images/Localizations.jpg
+    - assets/images/Organizations.jpg
+    - assets/images/Species.jpg
+    - assets/images/Vehicles.jpg
     - assets/icons/holocron.png
 
 
