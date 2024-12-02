@@ -68,9 +68,21 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.info),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AboutPage()),
+              showAboutDialog(
+                context: context,
+                applicationName: "The Master Holocron",
+                applicationVersion: "1.0.0",
+                applicationIcon: Image.asset(
+                  "assets/icons/JediHolocron.png",
+                  height: 50,
+                ),
+                children: [
+                  const Text(
+                    "The Master Holocron is your ultimate Star Wars encyclopedia. "
+                    "Explore characters, vehicles, species, and more from the Star Wars universe. "
+                    "This app is a tribute to the galaxy far, far away!",
+                  ),
+                ],
               );
             },
           ),
