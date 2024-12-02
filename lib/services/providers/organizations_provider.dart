@@ -26,4 +26,36 @@ class OrganizationProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // Fetch organization by ID, store in the provider and return
+  Future<Map<String, dynamic>> fetchOrganizationById(
+      String organizationId) async {
+    // Check if the organization is already cached
+    final cachedOrganization = _organizations?.firstWhere(
+      (organization) => organization['_id'] == organizationId,
+      orElse: () => null, // Return null if not found
+    );
+
+    if (cachedOrganization != null) {
+      return cachedOrganization;
+    }
+
+    // If not found, fetch from service
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final organization = await _service.fetchOrganizationById(organizationId);
+      // Cache the organization
+      _organizations
+          ?.add(organization); // Add to the list or cache as necessary
+      return organization;
+    } catch (e) {
+      _error = e.toString();
+      throw e; // Rethrow the error after caching
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

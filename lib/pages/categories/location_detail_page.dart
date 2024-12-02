@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:the_master_holocron/services/swd_service.dart';
+import 'package:provider/provider.dart';
+import 'package:the_master_holocron/services/providers/locations_provider.dart';
 
 class LocationDetailPage extends StatelessWidget {
   final String locationId;
@@ -8,22 +9,21 @@ class LocationDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final service = StarWarsService();
+    // Use the LocationProvider from the context
+    final provider = Provider.of<LocationProvider>(context, listen: false);
+
+    // Check if the location data is already in the provider
+    final location = provider.locations?.firstWhere(
+      (location) => location['_id'] == locationId,
+      orElse: () => null, // Return null if not found
+    );
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Location Details'),
       ),
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: service.fetchLocationsById(locationId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          } else {
-            final location = snapshot.data!;
-            return Padding(
+      body: location != null
+          ? Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,10 +39,38 @@ class LocationDetailPage extends StatelessWidget {
                   Text(location['description']),
                 ],
               ),
-            );
-          }
-        },
-      ),
+            )
+          : FutureBuilder<Map<String, dynamic>>(
+              future: provider.fetchLocationById(locationId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                } else if (snapshot.hasData) {
+                  final location = snapshot.data!;
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.network(location['image']),
+                        const SizedBox(height: 16),
+                        Text(
+                          location['name'],
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(location['description']),
+                      ],
+                    ),
+                  );
+                } else {
+                  return const Center(child: Text("Location not found"));
+                }
+              },
+            ),
     );
   }
 }

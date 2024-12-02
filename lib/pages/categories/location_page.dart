@@ -17,7 +17,7 @@ class LocationsPageState extends State<LocationsPage> {
 
     // Fetch location data after the first frame has been rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<LocationsProvider>(context, listen: false);
+      final provider = Provider.of<LocationProvider>(context, listen: false);
       if (provider.locations == null && !provider.isLoading) {
         provider.fetchLocations();
       }
@@ -30,7 +30,7 @@ class LocationsPageState extends State<LocationsPage> {
       appBar: AppBar(
         title: const Text("Star Wars Locations"),
       ),
-      body: Consumer<LocationsProvider>(
+      body: Consumer<LocationProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading) {
             return const Center(child: CircularProgressIndicator());

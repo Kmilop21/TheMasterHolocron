@@ -17,7 +17,7 @@ class VehiclesPageState extends State<VehiclesPage> {
 
     // Fetch vehicles data after the first frame has been rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<VehiclesProvider>(context, listen: false);
+      final provider = Provider.of<VehicleProvider>(context, listen: false);
       if (provider.vehicles == null && !provider.isLoading) {
         provider.fetchVehicles();
       }
@@ -30,7 +30,7 @@ class VehiclesPageState extends State<VehiclesPage> {
       appBar: AppBar(
         title: const Text("Star Wars Vehicles"),
       ),
-      body: Consumer<VehiclesProvider>(
+      body: Consumer<VehicleProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -57,7 +57,7 @@ class VehiclesPageState extends State<VehiclesPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => VehicleDetailsPage(
+                          builder: (context) => VehicleDetailPage(
                             vehicleId: vehicle['_id'].toString(),
                           ),
                         ),

@@ -151,7 +151,7 @@ class _SearchPageState extends State<SearchPage> {
       case 'species':
         return SpecieDetailPage(specieId: result['_id']);
       case 'vehicles':
-        return VehicleDetailsPage(vehicleId: result['_id']);
+        return VehicleDetailPage(vehicleId: result['_id']);
       // Agrega las demás categorías si tienen páginas de detalle
       default:
         return Scaffold(

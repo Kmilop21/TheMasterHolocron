@@ -17,7 +17,7 @@ class SpeciesPageState extends State<SpeciesPage> {
 
     // Fetch species data after the first frame has been rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<SpeciesProvider>(context, listen: false);
+      final provider = Provider.of<SpecieProvider>(context, listen: false);
       if (provider.species == null && !provider.isLoading) {
         provider.fetchSpecies();
       }
@@ -30,7 +30,7 @@ class SpeciesPageState extends State<SpeciesPage> {
       appBar: AppBar(
         title: const Text("Star Wars Species"),
       ),
-      body: Consumer<SpeciesProvider>(
+      body: Consumer<SpecieProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading) {
             return const Center(child: CircularProgressIndicator());
