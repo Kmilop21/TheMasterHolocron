@@ -1,11 +1,10 @@
 # The_Master_Holocron
 
-master holocron es una aplicacion destinada a ser una fuente de informacion para los fanaticos de star wars, funciona como una wiki de personajes, planetas, naves, entre mucha informacion mas de la famosa franquicia de star wars. 
+The master holocron es una aplicacion destinada a ser una fuente de informacion para los fanaticos de star wars, funciona como una wiki de personajes, criaturas, droides, etc. de la famosa franquicia de Star Wars.
 
+Esta fue desarrollada usando la API Rest: Star Wars Databank
+[Link](https://starwars-databank.vercel.app/)
 
+[APK](build/app/outputs/flutter-apk/app-debug.apk)
 
-## Getting Started
-
-
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+[VIDEO]()

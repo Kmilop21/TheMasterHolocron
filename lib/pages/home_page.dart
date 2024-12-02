@@ -77,8 +77,8 @@ class HomePage extends StatelessWidget {
                 ),
                 children: [
                   const Text(
-                    "The Master Holocron is your ultimate Star Wars encyclopedia. "
-                    "Explore characters, vehicles, species, and more from the Star Wars universe. "
+                    "The Master Holocron a friendly Star Wars Wiki. "
+                    "Explore characters, vehicles, species, and more from the Star Wars universe in a consice manner. "
                     "This app is a tribute to the galaxy far, far away!",
                   ),
                 ],

@@ -36,6 +36,19 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
         }
+        debug {
+            // This will change the name of the debug APK to "TheMasterHolocron_Debug.apk"
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+
+            applicationVariants.all { variant ->
+                if (variant.buildType.name == "debug") {
+                    variant.outputs.all { output ->
+                        output.outputFileName = "TheMasterHolocron_Debug.apk"
+                    }
+                }
+            }
+        }
     }
 }
 
