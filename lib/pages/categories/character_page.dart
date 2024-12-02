@@ -41,7 +41,25 @@ class _CharacterPageState extends State<CharacterPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Characters"),
+        
         actions: [
+          
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(
+                    service: widget.service,
+                    category: 'characters',
+                  ),
+                ),
+              );
+            },
+          ),
+          
+          /*
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
@@ -53,6 +71,7 @@ class _CharacterPageState extends State<CharacterPage> {
               );
             },
           ),
+          */
         ],
       ),
       body: _characters.isEmpty
