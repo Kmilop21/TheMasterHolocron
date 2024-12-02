@@ -7,4 +7,5 @@ Esta fue desarrollada usando la API Rest: Star Wars Databank
 
 [APK](build/app/outputs/flutter-apk/app-debug.apk)
 
-[VIDEO]()
+[VIDEO](https://youtu.be/FlAYdPo2cr8)
+
