@@ -139,7 +139,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget _detailPage(Map<String, dynamic> result) {
     switch (widget.category) {
       case 'characters':
-      //return CharacterDetailPage(characterId: result['_id']);
+        return CharacterDetailPage(characterId: result['_id']);
       case 'creatures':
         return CreatureDetailPage(creatureId: result['_id']);
       case 'droids':

@@ -56,15 +56,15 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("The Master Holocron"),
         actions: [
-          // IconButton(
-          //   icon: const Icon(Icons.favorite),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => const FavoritesPage()),
-          //     );
-          //   },
-          // ),
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FavoritesPage()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.info),
             onPressed: () {
