@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_master_holocron/pages/categories/character_detail_page.dart';
 import 'package:the_master_holocron/services/providers/characters_provider.dart';
+import 'package:the_master_holocron/pages/search.dart';
+import 'package:the_master_holocron/services/swd_service.dart';
 
 class CharactersPage extends StatefulWidget {
-  const CharactersPage({super.key});
+  final StarWarsService service = StarWarsService();
+  
+  CharactersPage({super.key});
 
   @override
   CharactersPageState createState() => CharactersPageState();
@@ -29,6 +33,28 @@ class CharactersPageState extends State<CharactersPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Characters"),
+        
+         actions: [
+          
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(
+                    service: widget.service,
+                    category: 'characters',
+                  ),
+                ),
+              );
+            },
+          ),
+          
+
+        ],
+
+
       ),
       body: Consumer<CharacterProvider>(
         builder: (context, provider, child) {

@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_master_holocron/pages/categories/vehicle_details_page.dart';
 import 'package:the_master_holocron/services/providers/vehicles_provider.dart';
+import 'package:the_master_holocron/pages/search.dart';
+import 'package:the_master_holocron/services/swd_service.dart';
+
 
 class VehiclesPage extends StatefulWidget {
-  const VehiclesPage({super.key});
+  
+  final StarWarsService service = StarWarsService();
+  VehiclesPage({super.key});
 
   @override
   VehiclesPageState createState() => VehiclesPageState();
@@ -29,6 +34,28 @@ class VehiclesPageState extends State<VehiclesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Vehicles"),
+
+       actions: [
+      
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchPage(
+                service: widget.service,
+                category: 'vehicles',
+              ),
+            ),
+          );
+        },
+      ),
+
+      ],
+        
+
+
       ),
       body: Consumer<VehicleProvider>(
         builder: (context, provider, child) {
