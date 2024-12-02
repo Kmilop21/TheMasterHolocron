@@ -15,35 +15,41 @@ class HomePage extends StatelessWidget {
       "name": "Characters",
       //"image": "assets/characters.jpg",
       "page": const CharactersPage(),
+      "image": "assets/images/Characters.jpg",
+      "page": CharacterPage(),
     },
     {
       "name": "Creatures",
       //"image": "assets/characters.jpg",
       "page": const CreaturesPage(),
+      "image": "assets/images/Creatures.jpg",
+      "page": CreaturesPage(),
     },
     {
       "name": "Droids",
       //"image": "assets/droids.jpg",
       "page": const DroidsPage(),
+      "image": "assets/images/Droids.jpg",
+      "page": DroidsPage(),
     },
     {
       "name": "Organizations",
-      //"image": "assets/organizations.jpg",
+      "image": "assets/images/Organizations.jpg",
       "page": OrganizationsPage(),
     },
     {
       "name": "Locations",
-      //"image": "assets/locations.jpg",
+      "image": "assets/images/Localizations.jpg",
       "page": LocationsPage(),
     },
     {
       "name": "Species",
-      //"image": "assets/species.jpg",
+      "image": "assets/images/Species.jpg",
       "page": SpeciesPage(),
     },
     {
       "name": "Vehicles",
-      //"image": "assets/vehicles.jpg",
+      "image": "assets/images/Vehicles.jpg",
       "page": VehiclesPage(),
     },
   ];
@@ -54,7 +60,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Star Wars Databank"),
+        title: const Text("The Master Holocron"),
         actions: [
           // IconButton(
           //   icon: const Icon(Icons.favorite),
@@ -96,20 +102,21 @@ class HomePage extends StatelessWidget {
               },
               child: Card(
                 elevation: 4,
+                color: const Color.fromARGB(255, 239, 239, 239),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: ClipRRect(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(8)),
-                        // child: Image.asset(
-                        //   category['image'],
-                        //   fit: BoxFit.cover,
-                        // ),
+                        borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(8)),
+                        child: Image.asset(
+                          category['image'],
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     Padding(
