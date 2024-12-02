@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:the_master_holocron/pages/about.dart';
 import 'package:the_master_holocron/pages/categories/character_page.dart';
 import 'package:the_master_holocron/pages/categories/creature_page.dart';
 import 'package:the_master_holocron/pages/categories/droid_page.dart';
