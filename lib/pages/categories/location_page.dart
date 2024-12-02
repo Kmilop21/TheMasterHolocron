@@ -1,53 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:the_master_holocron/pages/categories/location_detail_page.dart';
-import 'package:the_master_holocron/pages/search.dart';
-import 'package:the_master_holocron/services/swd_service.dart';
+import 'package:the_master_holocron/services/providers/locations_provider.dart';
 
-class LocationsPage extends StatelessWidget {
-  final StarWarsService service = StarWarsService();
+class LocationsPage extends StatefulWidget {
+  const LocationsPage({super.key});
 
-  LocationsPage({super.key});
+  @override
+  LocationsPageState createState() => LocationsPageState();
+}
+
+class LocationsPageState extends State<LocationsPage> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Fetch location data after the first frame has been rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<LocationsProvider>(context, listen: false);
+      if (provider.locations == null && !provider.isLoading) {
+        provider.fetchLocations();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Locations"),
-        
-      actions: [
-      
-      IconButton(
-        icon: const Icon(Icons.search),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(
-                service: service,
-                category: 'locations',
-              ),
-            ),
-          );
-        },
       ),
-
-      ],
-        
-        ),
-      body: FutureBuilder(
-        future: service.fetchLocations(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+      body: Consumer<LocationsProvider>(
+        builder: (context, provider, child) {
+          if (provider.isLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
+          } else if (provider.error != null) {
+            return Center(child: Text("Error: ${provider.error}"));
+          } else if (provider.locations == null) {
+            return const Center(child: Text("No locations found"));
           } else {
-            final locations = snapshot.data as List;
+            final locations = provider.locations!;
+
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Dos tarjetas por fila
+                  crossAxisCount: 2,
                   crossAxisSpacing: 8.0,
                   mainAxisSpacing: 8.0,
                 ),
@@ -91,15 +89,18 @@ class LocationsPage extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Text(
-                                location['name'],
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                            child: Column(
+                              children: [
+                                Text(
+                                  location['name'],
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
+                                const SizedBox(height: 4),
+                              ],
                             ),
                           ),
                         ],
@@ -115,41 +116,3 @@ class LocationsPage extends StatelessWidget {
     );
   }
 }
-
-/*
-class LocationsPage extends StatelessWidget {
-  final StarWarsService service = StarWarsService();
-
-  LocationsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Star Wars Locations")),
-      body: FutureBuilder(
-        future: service.fetchLocations(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          } else {
-            final locations = snapshot.data as List;
-
-            return ListView.builder(
-              itemCount: locations.length,
-              itemBuilder: (context, index) {
-                final location = locations[index];
-                return ListTile(
-                  leading: Image.network(location['image']),
-                  title: Text(location['name']),
-                );
-              },
-            );
-          }
-        },
-      ),
-    );
-  }
-}
-*/

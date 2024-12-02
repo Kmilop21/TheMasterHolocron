@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_master_holocron/pages/about.dart';
 import 'package:the_master_holocron/pages/categories/character_page.dart';
 import 'package:the_master_holocron/pages/categories/creature_page.dart';
 import 'package:the_master_holocron/pages/categories/droid_page.dart';
@@ -13,17 +14,17 @@ class HomePage extends StatelessWidget {
     {
       "name": "Characters",
       //"image": "assets/characters.jpg",
-      "page": CharacterPage(),
+      "page": const CharactersPage(),
     },
     {
       "name": "Creatures",
       //"image": "assets/characters.jpg",
-      "page": CreaturesPage(),
+      "page": const CreaturesPage(),
     },
     {
       "name": "Droids",
       //"image": "assets/droids.jpg",
-      "page": DroidsPage(),
+      "page": const DroidsPage(),
     },
     {
       "name": "Organizations",
@@ -55,13 +56,21 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Star Wars Databank"),
         actions: [
+          // IconButton(
+          //   icon: const Icon(Icons.favorite),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => const FavoritesPage()),
+          //     );
+          //   },
+          // ),
           IconButton(
-            icon: const Icon(Icons.favorite),
+            icon: const Icon(Icons.info),
             onPressed: () {
-              // Navigate to the FavoritesPage when the button is pressed
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const FavoritesPage()),
+                MaterialPageRoute(builder: (context) => const AboutPage()),
               );
             },
           ),

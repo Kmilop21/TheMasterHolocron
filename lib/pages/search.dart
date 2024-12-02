@@ -8,7 +8,6 @@ import 'package:the_master_holocron/pages/categories/specie_detail_page.dart';
 import 'package:the_master_holocron/pages/categories/vehicle_details_page.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
 
-
 class SearchPage extends StatefulWidget {
   final StarWarsService service;
   final String category; // Nueva propiedad para indicar la categoría
@@ -140,19 +139,19 @@ class _SearchPageState extends State<SearchPage> {
   Widget _detailPage(Map<String, dynamic> result) {
     switch (widget.category) {
       case 'characters':
-        return CharacterDetailPage(characterId: result['_id']);
+      //return CharacterDetailPage(characterId: result['_id']);
       case 'creatures':
         return CreatureDetailPage(creatureId: result['_id']);
       case 'droids':
-        return DroidDetailPage(droidId: result['_id']);        
+        return DroidDetailPage(droidId: result['_id']);
       case 'organizations':
-        return OrganizationDetailPage(organizationId: result['_id']);  
+        return OrganizationDetailPage(organizationId: result['_id']);
       case 'locations':
         return LocationDetailPage(locationId: result['_id']);
       case 'species':
         return SpecieDetailPage(specieId: result['_id']);
       case 'vehicles':
-        return VehicleDetailsPage(vehicleId: result['_id']);  
+        return VehicleDetailsPage(vehicleId: result['_id']);
       // Agrega las demás categorías si tienen páginas de detalle
       default:
         return Scaffold(

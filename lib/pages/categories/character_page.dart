@@ -1,53 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:the_master_holocron/services/swd_provider.dart';
-import 'package:the_master_holocron/services/swd_service.dart';
-import 'character_detail_page.dart';
+import 'package:the_master_holocron/pages/categories/character_detail_page.dart';
+import 'package:the_master_holocron/services/providers/character_provider.dart';
 
-class CharacterPage extends StatefulWidget {
-  final StarWarsService service = StarWarsService();
-
-  CharacterPage({super.key});
+class CharactersPage extends StatefulWidget {
+  const CharactersPage({super.key});
 
   @override
-  State<CharacterPage> createState() => _CharacterPageState();
+  CharactersPageState createState() => CharactersPageState();
 }
 
-class _CharacterPageState extends State<CharacterPage> {
+class CharactersPageState extends State<CharactersPage> {
   @override
-  void initState() {
-    super.initState();
-    _fetchCharacters();
-  }
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-  Future<void> _fetchCharacters() async {
-    final provider = Provider.of<SWDataProvider>(context, listen: false);
-
-    if (provider.characters.isEmpty) {
-      try {
-        final characters = (await widget.service.fetchCharacters())
-            .cast<Map<String, dynamic>>(); // Fetch characters as a list of maps
-        provider.addEntities(characters, 'character');
-      } catch (error) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Error fetching characters: $error")),
-          );
-        }
+    // Fetch character data after the first frame has been rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<CharacterProvider>(context, listen: false);
+      if (provider.characters == null && !provider.isLoading) {
+        provider.fetchCharacters();
       }
-    }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SWDataProvider>(context);
-    final characters = provider.characters;
-
     return Scaffold(
-      appBar: AppBar(title: const Text("Star Wars Characters")),
-      body: characters.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
+      appBar: AppBar(
+        title: const Text("Star Wars Characters"),
+      ),
+      body: Consumer<CharacterProvider>(
+        builder: (context, provider, child) {
+          if (provider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (provider.error != null) {
+            return Center(child: Text("Error: ${provider.error}"));
+          } else if (provider.characters == null) {
+            return const Center(child: Text("No characters found"));
+          } else {
+            final characters = provider.characters!;
+
+            return Padding(
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -57,14 +51,14 @@ class _CharacterPageState extends State<CharacterPage> {
                 ),
                 itemCount: characters.length,
                 itemBuilder: (context, index) {
-                  final character = characters[index]; // SWEntity object
+                  final character = characters[index];
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => CharacterDetailPage(
-                            character: character, // Use character.id
+                            characterId: character['_id'].toString(),
                           ),
                         ),
                       );
@@ -83,7 +77,7 @@ class _CharacterPageState extends State<CharacterPage> {
                                 top: Radius.circular(8),
                               ),
                               child: Image.network(
-                                character.image, // Use character.image
+                                character['image'],
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   return const Center(
@@ -95,14 +89,18 @@ class _CharacterPageState extends State<CharacterPage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Text(
-                                character.name, // Use character.name
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                            child: Column(
+                              children: [
+                                Text(
+                                  character['name'],
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                              ),
+                                const SizedBox(height: 4),
+                              ],
                             ),
                           ),
                         ],
@@ -111,7 +109,10 @@ class _CharacterPageState extends State<CharacterPage> {
                   );
                 },
               ),
-            ),
+            );
+          }
+        },
+      ),
     );
   }
 }

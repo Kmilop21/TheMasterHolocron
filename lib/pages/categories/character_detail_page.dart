@@ -1,53 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:the_master_holocron/services/swd_provider.dart';
-import 'package:the_master_holocron/models/sw_entity.dart';
+import 'package:the_master_holocron/services/swd_service.dart';
 
 class CharacterDetailPage extends StatelessWidget {
-  final SWEntity character;
+  final String characterId;
 
-  const CharacterDetailPage({super.key, required this.character});
+  const CharacterDetailPage({super.key, required this.characterId});
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SWDataProvider>(context);
+    final service = StarWarsService();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Character Details'),
-        actions: [
-          IconButton(
-            icon: Icon(
-              provider.isFavorite(character.id)
-                  ? Icons.star
-                  : Icons.star_border,
-              color: provider.isFavorite(character.id) ? Colors.yellow : null,
-            ),
-            onPressed: () {
-              if (provider.isFavorite(character.id)) {
-                provider.removeFavorite(character);
-              } else {
-                provider.addFavorite(character);
-              }
-            },
-          ),
-        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(character.image),
-            const SizedBox(height: 16),
-            Text(
-              character.name,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(character.description),
-          ],
-        ),
+      body: FutureBuilder<Map<String, dynamic>>(
+        future: service.fetchCharacterById(characterId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          } else {
+            final character = snapshot.data!;
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.network(character['image']),
+                  const SizedBox(height: 16),
+                  Text(
+                    character['name'],
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(character['description']),
+                ],
+              ),
+            );
+          }
+        },
       ),
     );
   }

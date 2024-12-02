@@ -1,53 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:the_master_holocron/pages/categories/droid_detail_page.dart';
-import 'package:the_master_holocron/pages/search.dart';
-import 'package:the_master_holocron/services/swd_service.dart';
+import 'package:the_master_holocron/services/providers/droid_provider.dart';
 
-class DroidsPage extends StatelessWidget {
-  final StarWarsService service = StarWarsService();
+class DroidsPage extends StatefulWidget {
+  const DroidsPage({super.key});
 
-  DroidsPage({super.key});
+  @override
+  DroidsPageState createState() => DroidsPageState();
+}
+
+class DroidsPageState extends State<DroidsPage> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Fetch droids data after the first frame has been rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<DroidProvider>(context, listen: false);
+      if (provider.droids == null && !provider.isLoading) {
+        provider.fetchDroids();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Star Wars Droids"),
-      
-      actions: [
-      
-      IconButton(
-        icon: const Icon(Icons.search),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(
-                service: service,
-                category: 'droids',
-              ),
-            ),
-          );
-        },
+      appBar: AppBar(
+        title: const Text("Star Wars Droids"),
       ),
-
-      ],
-      
-      ),
-      body: FutureBuilder(
-        future: service.fetchDroids(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+      body: Consumer<DroidProvider>(
+        builder: (context, provider, child) {
+          if (provider.isLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
+          } else if (provider.error != null) {
+            return Center(child: Text("Error: ${provider.error}"));
+          } else if (provider.droids == null) {
+            return const Center(child: Text("No droids found"));
           } else {
-            final droids = snapshot.data as List;
+            final droids = provider.droids!;
 
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Dos tarjetas por fila
+                  crossAxisCount: 2,
                   crossAxisSpacing: 8.0,
                   mainAxisSpacing: 8.0,
                 ),
@@ -118,42 +116,3 @@ class DroidsPage extends StatelessWidget {
     );
   }
 }
-
-/*
-class DroidsPage extends StatelessWidget {
-  final StarWarsService service = StarWarsService();
-
-  DroidsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Star Wars Creatures")),
-      body: FutureBuilder(
-        future: service.fetchDroids(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          } else {
-            final droids = snapshot.data as List;
-
-            return ListView.builder(
-              itemCount: droids.length,
-              itemBuilder: (context, index) {
-                final droid = droids[index];
-                return ListTile(
-                  leading: Image.network(droid['image']),
-                  title: Text(droid['name']),
-
-                );
-              },
-            );
-          }
-        },
-      ),
-    );
-  }
-}
-*/

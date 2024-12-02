@@ -45,7 +45,6 @@ class StarWarsService {
     }
   }
 
-
   Future<Map<String, dynamic>> searchCreatureByName(String name) async {
     final formattedName =
         Uri.encodeComponent(name); // Codificar el nombre para la URL
@@ -66,8 +65,7 @@ class StarWarsService {
     }
   }
 
-  
-    Future<Map<String, dynamic>> searchDroidByName(String name) async {
+  Future<Map<String, dynamic>> searchDroidByName(String name) async {
     final formattedName =
         Uri.encodeComponent(name); // Codificar el nombre para la URL
     final url = '$baseUrl/droids/name/$formattedName';
@@ -87,7 +85,7 @@ class StarWarsService {
     }
   }
 
-    Future<Map<String, dynamic>> searchLocationsByName(String name) async {
+  Future<Map<String, dynamic>> searchLocationsByName(String name) async {
     final formattedName =
         Uri.encodeComponent(name); // Codificar el nombre para la URL
     final url = '$baseUrl/locations/name/$formattedName';
@@ -106,7 +104,6 @@ class StarWarsService {
           'Failed to fetch location. HTTP status: ${response.statusCode}');
     }
   }
-
 
   Future<Map<String, dynamic>> searchOrganizationsByName(String name) async {
     final formattedName =
@@ -148,7 +145,6 @@ class StarWarsService {
     }
   }
 
-
   Future<Map<String, dynamic>> searchVehiclesByName(String name) async {
     final formattedName =
         Uri.encodeComponent(name); // Codificar el nombre para la URL
@@ -168,7 +164,6 @@ class StarWarsService {
           'Failed to fetch vehicle. HTTP status: ${response.statusCode}');
     }
   }
-
 
   Future<Map<String, dynamic>> fetchCharacterById(String id) async {
     final url = '$baseUrl/characters/$id';
