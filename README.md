@@ -9,3 +9,4 @@ Esta fue desarrollada usando la API Rest: Star Wars Databank
 
 [VIDEO](https://youtu.be/FlAYdPo2cr8)
 
+[Diagrama](https://github.com/Kmilop21/TheMasterHolocron/blob/main/DiagramaArquitecturaDeInformacion.jpg?raw=true)
