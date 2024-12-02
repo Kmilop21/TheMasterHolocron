@@ -5,9 +5,7 @@ import 'package:the_master_holocron/services/providers/vehicles_provider.dart';
 import 'package:the_master_holocron/pages/search.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
 
-
 class VehiclesPage extends StatefulWidget {
-  
   final StarWarsService service = StarWarsService();
   VehiclesPage({super.key});
 
@@ -34,28 +32,22 @@ class VehiclesPageState extends State<VehiclesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Vehicles"),
-
-       actions: [
-      
-      IconButton(
-        icon: const Icon(Icons.search),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(
-                service: widget.service,
-                category: 'vehicles',
-              ),
-            ),
-          );
-        },
-      ),
-
-      ],
-        
-
-
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(
+                    service: widget.service,
+                    category: 'vehicles',
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Consumer<VehicleProvider>(
         builder: (context, provider, child) {

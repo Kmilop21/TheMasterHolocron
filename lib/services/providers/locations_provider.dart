@@ -11,8 +11,9 @@ class LocationProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
+  // Fetch all locations, avoiding duplicate fetches
   Future<void> fetchLocations() async {
-    if (_locations != null) return; // Don't fetch again if already fetched
+    if (_locations != null) return; // Already fetched
 
     _isLoading = true;
     notifyListeners();
@@ -27,7 +28,7 @@ class LocationProvider with ChangeNotifier {
     }
   }
 
-  // Fetch location by ID, store in the provider and return
+  // Fetch a specific location by ID, avoiding unnecessary `notifyListeners` calls
   Future<Map<String, dynamic>> fetchLocationById(String locationId) async {
     // Check if the location is already cached
     final cachedLocation = _locations?.firstWhere(
@@ -39,21 +40,15 @@ class LocationProvider with ChangeNotifier {
       return cachedLocation;
     }
 
-    // If not found, fetch from service
-    _isLoading = true;
-    notifyListeners();
-
     try {
+      // Fetch from service if not cached
       final location = await _service.fetchLocationsById(locationId);
-      // Cache the location
-      _locations?.add(location); // Add to the list or cache as necessary
+      // Cache the fetched location
+      _locations = [...?_locations, location];
       return location;
     } catch (e) {
       _error = e.toString();
-      throw e; // Rethrow the error after caching
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      rethrow; // Rethrow the error to allow error handling at a higher level
     }
   }
 }

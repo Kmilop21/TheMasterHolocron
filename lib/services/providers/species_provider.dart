@@ -11,8 +11,9 @@ class SpecieProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
+  // Fetch all species, avoiding duplicate fetches
   Future<void> fetchSpecies() async {
-    if (_species != null) return; // Don't fetch again if already fetched
+    if (_species != null) return; // Already fetched
 
     _isLoading = true;
     notifyListeners();
@@ -27,9 +28,9 @@ class SpecieProvider with ChangeNotifier {
     }
   }
 
-  // Fetch specie by ID, store in the provider and return
+  // Fetch a specific species by ID, store in the provider and return
   Future<Map<String, dynamic>> fetchSpecieById(String specieId) async {
-    // Check if the specie is already cached
+    // Check if the species is already cached
     final cachedSpecie = _species?.firstWhere(
       (specie) => specie['_id'] == specieId,
       orElse: () => null, // Return null if not found
@@ -39,21 +40,15 @@ class SpecieProvider with ChangeNotifier {
       return cachedSpecie;
     }
 
-    // If not found, fetch from service
-    _isLoading = true;
-    notifyListeners();
-
     try {
+      // Fetch from service if not cached
       final specie = await _service.fetchSpeciesById(specieId);
-      // Cache the specie
-      _species?.add(specie); // Add to the list or cache as necessary
+      // Cache the fetched specie
+      _species = [...?_species, specie];
       return specie;
     } catch (e) {
       _error = e.toString();
-      throw e; // Rethrow the error after caching
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      rethrow; // Rethrow the error to allow error handling at a higher level
     }
   }
 }

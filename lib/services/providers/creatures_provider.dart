@@ -11,8 +11,9 @@ class CreatureProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
+  // Fetch all creatures, avoiding duplicate fetches
   Future<void> fetchCreatures() async {
-    if (_creatures != null) return; // Don't fetch again if already fetched
+    if (_creatures != null) return; // Already fetched
 
     _isLoading = true;
     notifyListeners();
@@ -27,7 +28,7 @@ class CreatureProvider with ChangeNotifier {
     }
   }
 
-  // Fetch creature by ID, store in the provider and return
+  // Fetch a specific creature by ID, avoiding unnecessary `notifyListeners` calls
   Future<Map<String, dynamic>> fetchCreatureById(String creatureId) async {
     // Check if the creature is already cached
     final cachedCreature = _creatures?.firstWhere(
@@ -39,21 +40,15 @@ class CreatureProvider with ChangeNotifier {
       return cachedCreature;
     }
 
-    // If not found, fetch from service
-    _isLoading = true;
-    notifyListeners();
-
     try {
+      // Fetch from service if not cached
       final creature = await _service.fetchCreatureById(creatureId);
-      // Cache the creature
-      _creatures?.add(creature); // Add to the list or cache as necessary
+      // Cache the fetched creature
+      _creatures = [...?_creatures, creature];
       return creature;
     } catch (e) {
       _error = e.toString();
-      throw e; // Rethrow the error after caching
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      rethrow; // Rethrow the error to allow error handling at a higher level
     }
   }
 }

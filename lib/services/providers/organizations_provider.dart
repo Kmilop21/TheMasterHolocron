@@ -11,8 +11,9 @@ class OrganizationProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
+  // Fetch all organizations, avoiding duplicate fetches
   Future<void> fetchOrganizations() async {
-    if (_organizations != null) return; // Don't fetch again if already fetched
+    if (_organizations != null) return; // Already fetched
 
     _isLoading = true;
     notifyListeners();
@@ -27,7 +28,7 @@ class OrganizationProvider with ChangeNotifier {
     }
   }
 
-  // Fetch organization by ID, store in the provider and return
+  // Fetch a specific organization by ID, store in the provider and return
   Future<Map<String, dynamic>> fetchOrganizationById(
       String organizationId) async {
     // Check if the organization is already cached
@@ -40,22 +41,15 @@ class OrganizationProvider with ChangeNotifier {
       return cachedOrganization;
     }
 
-    // If not found, fetch from service
-    _isLoading = true;
-    notifyListeners();
-
     try {
+      // Fetch from service if not cached
       final organization = await _service.fetchOrganizationById(organizationId);
-      // Cache the organization
-      _organizations
-          ?.add(organization); // Add to the list or cache as necessary
+      // Cache the fetched organization
+      _organizations = [...?_organizations, organization];
       return organization;
     } catch (e) {
       _error = e.toString();
-      throw e; // Rethrow the error after caching
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      rethrow; // Rethrow the error to allow error handling at a higher level
     }
   }
 }

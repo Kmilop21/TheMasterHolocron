@@ -17,7 +17,7 @@ class FavoritesDatabase {
       version: 2,
       onCreate: (db, version) async {
         await db.execute('''
-    CREATE TABLE favorites_characters (
+    CREATE TABLE favorites_character (
       id TEXT PRIMARY KEY,
       name TEXT,
       description TEXT,
@@ -25,7 +25,7 @@ class FavoritesDatabase {
     )
   ''');
         await db.execute('''
-    CREATE TABLE favorites_creatures (
+    CREATE TABLE favorites_creature (
       id TEXT PRIMARY KEY,
       name TEXT,
       description TEXT,
@@ -33,7 +33,7 @@ class FavoritesDatabase {
     )
   ''');
         await db.execute('''
-    CREATE TABLE favorites_droids (
+    CREATE TABLE favorites_droid (
       id TEXT PRIMARY KEY,
       name TEXT,
       description TEXT,
@@ -41,7 +41,7 @@ class FavoritesDatabase {
     )
   ''');
         await db.execute('''
-    CREATE TABLE favorites_locations (
+    CREATE TABLE favorites_location (
       id TEXT PRIMARY KEY,
       name TEXT,
       description TEXT,
@@ -49,7 +49,7 @@ class FavoritesDatabase {
     )
   ''');
         await db.execute('''
-    CREATE TABLE favorites_organizations (
+    CREATE TABLE favorites_organization (
       id TEXT PRIMARY KEY,
       name TEXT,
       description TEXT,
@@ -65,7 +65,7 @@ class FavoritesDatabase {
     )
   ''');
         await db.execute('''
-    CREATE TABLE favorites_vehicles (
+    CREATE TABLE favorites_vehicle (
       id TEXT PRIMARY KEY,
       name TEXT,
       description TEXT,
@@ -79,7 +79,7 @@ class FavoritesDatabase {
 
   Future<void> addFavorite(SWEntity entity) async {
     final db = await _getDatabase();
-    final tableName = 'favorites_${entity.category}s';
+    final tableName = 'favorites_${entity.category}';
     await db.insert(
       tableName,
       {
@@ -94,7 +94,7 @@ class FavoritesDatabase {
 
   Future<void> removeFavorite(String id, String category) async {
     final db = await _getDatabase();
-    final tableName = 'favorites_${category}s';
+    final tableName = 'favorites_${category}';
     await db.delete(
       tableName,
       where: 'id = ?',
@@ -104,7 +104,7 @@ class FavoritesDatabase {
 
   Future<bool> isFavorite(String id, String category) async {
     final db = await _getDatabase();
-    final tableName = 'favorites_${category}s';
+    final tableName = 'favorites_${category}';
     final result = await db.query(
       tableName,
       where: 'id = ?',
@@ -115,7 +115,7 @@ class FavoritesDatabase {
 
   Future<List<SWEntity>> fetchFavorites(String category) async {
     final db = await _getDatabase();
-    final tableName = 'favorites_${category}s';
+    final tableName = 'favorites_${category}';
     final result = await db.query(tableName);
 
     return result.map((row) {

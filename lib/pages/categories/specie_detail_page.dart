@@ -60,7 +60,7 @@ class _SpeciesDetailPageState extends State<SpeciesDetailPage> {
     final db = FavoritesDatabase();
 
     if (_isFavorite) {
-      await db.removeFavorite(_species!.id, "species");
+      await db.removeFavorite(_species!.id, "specie");
     } else {
       await db.addFavorite(_species!);
     }

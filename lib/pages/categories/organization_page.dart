@@ -6,7 +6,6 @@ import 'package:the_master_holocron/pages/search.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
 
 class OrganizationsPage extends StatefulWidget {
-  
   final StarWarsService service = StarWarsService();
   OrganizationsPage({super.key});
 
@@ -34,26 +33,22 @@ class OrganizationsPageState extends State<OrganizationsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Organizations"),
-
-      actions: [
-      
-      IconButton(
-        icon: const Icon(Icons.search),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(
-                service: widget.service,
-                category: 'organizations',
-              ),
-            ),
-          );
-        },
-      ),
-
-      ],
-
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(
+                    service: widget.service,
+                    category: 'organizations',
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Consumer<OrganizationProvider>(
         builder: (context, provider, child) {

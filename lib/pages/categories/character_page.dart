@@ -7,7 +7,7 @@ import 'package:the_master_holocron/services/swd_service.dart';
 
 class CharactersPage extends StatefulWidget {
   final StarWarsService service = StarWarsService();
-  
+
   CharactersPage({super.key});
 
   @override
@@ -33,9 +33,7 @@ class CharactersPageState extends State<CharactersPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Characters"),
-        
-         actions: [
-          
+        actions: [
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
@@ -50,11 +48,7 @@ class CharactersPageState extends State<CharactersPage> {
               );
             },
           ),
-          
-
         ],
-
-
       ),
       body: Consumer<CharacterProvider>(
         builder: (context, provider, child) {

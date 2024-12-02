@@ -11,8 +11,9 @@ class VehicleProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
+  // Fetch all vehicles, avoiding duplicate fetches
   Future<void> fetchVehicles() async {
-    if (_vehicles != null) return; // Don't fetch again if already fetched
+    if (_vehicles != null) return; // Already fetched
 
     _isLoading = true;
     notifyListeners();
@@ -27,7 +28,7 @@ class VehicleProvider with ChangeNotifier {
     }
   }
 
-  // Fetch vehicle by ID, store in the provider and return
+  // Fetch a specific vehicle by ID, store in the provider and return
   Future<Map<String, dynamic>> fetchVehicleById(String vehicleId) async {
     // Check if the vehicle is already cached
     final cachedVehicle = _vehicles?.firstWhere(
@@ -39,21 +40,15 @@ class VehicleProvider with ChangeNotifier {
       return cachedVehicle;
     }
 
-    // If not found, fetch from service
-    _isLoading = true;
-    notifyListeners();
-
     try {
+      // Fetch from service if not cached
       final vehicle = await _service.fetchVehicleById(vehicleId);
-      // Cache the vehicle
-      _vehicles?.add(vehicle); // Add to the list or cache as necessary
+      // Cache the fetched vehicle
+      _vehicles = [...?_vehicles, vehicle];
       return vehicle;
     } catch (e) {
       _error = e.toString();
-      throw e; // Rethrow the error after caching
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      rethrow; // Rethrow the error to allow error handling at a higher level
     }
   }
 }

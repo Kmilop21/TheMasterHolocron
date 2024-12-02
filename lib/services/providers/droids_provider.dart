@@ -11,8 +11,9 @@ class DroidProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
+  // Fetch all droids, avoiding duplicate fetches
   Future<void> fetchDroids() async {
-    if (_droids != null) return; // Don't fetch again if already fetched
+    if (_droids != null) return; // Already fetched
 
     _isLoading = true;
     notifyListeners();
@@ -27,7 +28,7 @@ class DroidProvider with ChangeNotifier {
     }
   }
 
-  // Fetch droid by ID, store in the provider and return
+  // Fetch a specific droid by ID, avoiding unnecessary `notifyListeners` calls
   Future<Map<String, dynamic>> fetchDroidById(String droidId) async {
     // Check if the droid is already cached
     final cachedDroid = _droids?.firstWhere(
@@ -39,21 +40,15 @@ class DroidProvider with ChangeNotifier {
       return cachedDroid;
     }
 
-    // If not found, fetch from service
-    _isLoading = true;
-    notifyListeners();
-
     try {
+      // Fetch from service if not cached
       final droid = await _service.fetchDroidById(droidId);
-      // Cache the droid
-      _droids?.add(droid); // Add to the list or cache as necessary
+      // Cache the fetched droid
+      _droids = [...?_droids, droid];
       return droid;
     } catch (e) {
       _error = e.toString();
-      throw e; // Rethrow the error after caching
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      rethrow; // Rethrow the error to allow error handling at a higher level
     }
   }
 }

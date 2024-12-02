@@ -31,28 +31,21 @@ class CharacterProvider with ChangeNotifier {
     // Check if the character is already cached
     final cachedCharacter = _characters?.firstWhere(
       (character) => character['_id'] == characterId,
-      orElse: () => null, // Return null if not found
+      orElse: () => null,
     );
 
     if (cachedCharacter != null) {
       return cachedCharacter;
     }
 
-    // If not found, fetch from service
-    _isLoading = true;
-    notifyListeners();
-
     try {
       final character = await _service.fetchCharacterById(characterId);
-      // Cache the character
-      _characters?.add(character); // Add to the list or cache as necessary
+      // Cache the character without notifying listeners immediately
+      _characters = [...?_characters, character];
       return character;
     } catch (e) {
       _error = e.toString();
-      throw e; // Rethrow the error after caching
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      rethrow; // Rethrow the error after caching
     }
   }
 }

@@ -6,7 +6,6 @@ import 'package:the_master_holocron/pages/search.dart';
 import 'package:the_master_holocron/services/swd_service.dart';
 
 class CreaturesPage extends StatefulWidget {
-  
   final StarWarsService service = StarWarsService();
   CreaturesPage({super.key});
 
@@ -33,26 +32,22 @@ class CreaturesPageState extends State<CreaturesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Star Wars Creatures"),
-
-      actions: [
-      
-      IconButton(
-        icon: const Icon(Icons.search),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(
-                service: widget.service,
-                category: 'creatures',
-              ),
-            ),
-          );
-        },
-      ),
-
-      ],
-
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(
+                    service: widget.service,
+                    category: 'creatures',
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Consumer<CreatureProvider>(
         builder: (context, provider, child) {
